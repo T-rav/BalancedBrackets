@@ -15,7 +15,7 @@ namespace Brackets.Parser.Tests
             //---------------Act ----------------------
             var result = parser.VerifyBracketsAreBalanced(input);
             //---------------Assert -----------------------
-            Assert.AreEqual(expected,result);
+            Assert.AreEqual(expected, result);
         }
 
         [TestCase("[")]
@@ -32,11 +32,50 @@ namespace Brackets.Parser.Tests
         }
 
         [Test]
-        public void VerifyBracketsAreBalanced_WhenPairOfUnBalancedBrackets_ShouldReturnFail()
+        public void VerifyBracketsAreBalanced_WhenPairOfUnbalancedBrackets_ShouldReturnFail()
         {
             //---------------Arrange-------------------
             var input = "][";
             var expected = "Fail";
+            var parser = new BracketsParser();
+            //---------------Act ----------------------
+            var result = parser.VerifyBracketsAreBalanced(input);
+            //---------------Assert -----------------------
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void VerifyBracketsAreBalanced_WhenUnclosedNestedBrackets_ShouldReturnFail()
+        {
+            //---------------Arrange-------------------
+            var input = "[[]";
+            var expected = "Fail";
+            var parser = new BracketsParser();
+            //---------------Act ----------------------
+            var result = parser.VerifyBracketsAreBalanced(input);
+            //---------------Assert -----------------------
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void VerifyBracketsAreBalanced_WhenPairOfBalancedBrackets_ShouldReturnOk()
+        {
+            //---------------Arrange-------------------
+            var input = "[]";
+            var expected = "Ok";
+            var parser = new BracketsParser();
+            //---------------Act ----------------------
+            var result = parser.VerifyBracketsAreBalanced(input);
+            //---------------Assert -----------------------
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void VerifyBracketsAreBalanced_WhenNestedBalancedBrackets_ShouldReturnOk()
+        {
+            //---------------Arrange-------------------
+            var input = "[[]]";
+            var expected = "Ok";
             var parser = new BracketsParser();
             //---------------Act ----------------------
             var result = parser.VerifyBracketsAreBalanced(input);
@@ -49,14 +88,16 @@ namespace Brackets.Parser.Tests
     {
         public string VerifyBracketsAreBalanced(string input)
         {
-            if (input == string.Empty)
-            {
-                return "Ok";
-            }
-            if (input == "[" || input == "]" || input == "][")
+            if (input.StartsWith("]") || input.EndsWith("[") || input.Length % 2 != 0)
             {
                 return "Fail";
             }
+
+            if (input.Length % 2 == 0)
+            {
+                return "Ok";
+            }
+
             return string.Empty;
         }
     }
