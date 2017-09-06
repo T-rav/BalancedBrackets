@@ -82,5 +82,18 @@ namespace Brackets.Parser.Tests
             //---------------Assert -----------------------
             Assert.AreEqual(expected, result);
         }
+
+        [Test]
+        public void VerifyBracketsAreBalanced_WhenDoublyNestedSetOfBalancedBrackets_ShouldReturnOk()
+        {
+            //---------------Arrange-------------------
+            var input = "[[[][]]]";
+            var expected = "Ok";
+            var parser = new BracketsParser();
+            //---------------Act ----------------------
+            var result = parser.VerifyBracketsAreBalanced(input);
+            //---------------Assert -----------------------
+            Assert.AreEqual(expected, result);
+        }
     }
 }
